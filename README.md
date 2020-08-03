@@ -21,7 +21,7 @@ Below are the target table details:
 3. Format: parquet
 
 ### Conceptual Data Model and Data dictionary:
-1. fact_immigration: The table will contain the immigration details for travellers travelling in the US.
+fact_immigration: The table will contain the immigration details for travellers travelling in the US.
 ---------------------
 1. i94_cicid = unique id assigned to each row obtained from i94_apr16_sub.sas7bdat(cicid)
 2. i94_country_origin = coutry of origin obtained from I94CIT_I94RES_lookup.csv(value)
@@ -35,7 +35,7 @@ Below are the target table details:
 10. i94_age = Age of the traveller obtained from i94_apr16_sub.sas7bdat(i94bir and biryear)
 11. year = Year of arrival date
 
-2. dim_temperature: The table will contain the temperature for USA across various cities post 1970.
+dim_temperature: The table will contain the temperature for USA across various cities post 1970.
 ---------------------
 1. i94_port_code = 3 character i94 port code from the immigration dataset obtained from I94PORT_lookup.csv(code)
 2. city = City where the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(city).
@@ -47,7 +47,7 @@ Below are the target table details:
 8. longitude = longitude where the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(Longitude).
 9. year = year of date when the tempertature was recorded.
 
-3. dim_date : The table will contain various date dimensions for the arrival and deperature dates from the immigration dataset.
+dim_date : The table will contain various date dimensions for the arrival and deperature dates from the immigration dataset.
 ---------------------
 1. date = arrival date obtained from i94_apr16_sub.sas7bdat(arrdate)
 2. year = year of arrival date
@@ -64,7 +64,7 @@ The ETL pipeline will leverage Spark's in memory processing capabilities which i
 3. Save the transformed dataframe with the required partitioning in parquet format.
 
 ### Detail ETL Mapping Design:
-1. fact_immigration:
+fact_immigration:
 --------------------
 1. Read the following datasets and convert it into spark dataframe: i94_apr16_sub.sas7bdat, I94PORT_lookup.csv, I94CIT_I94RES_lookup.csv
 2. Get the actual country names for the country of origin and country of residence codes values by joining i94_apr16_sub.sas7bdat and I94CIT_I94RES_lookup.csv dataframes.
@@ -75,7 +75,7 @@ The ETL pipeline will leverage Spark's in memory processing capabilities which i
 7. Convert the arrival date and the departure date from SAS numeric format to yyyy-mm-dd format and filter out the invalid records.
 8. Select the required columns to create the fact table and write it in parquet format partitioned by year of arrival date and i94 port code.
 
-2. dim_temperature:
+dim_temperature:
 --------------------
 1. Read the GlobalLandTemperaturesByCity.csv file and convert to spark dataframe
 2. Check the temperature column for null values and filter out records where the average temperature columns value is null.
@@ -83,7 +83,7 @@ The ETL pipeline will leverage Spark's in memory processing capabilities which i
 4. Join GlobalLandTemperaturesByCity.csv with the I94PORT_lookup.csv dataframes to get the i94 port of entry code and state based on the city column.
 5. Select the required columns to create the temperature dimension table and write in parquet format partitioned by year of the date when the temperature was recorded.
 
-3. dim_date:
+dim_date:
 --------------------
 1. Get the arrival date from immigration fact table and extract various date dimensions such as year, month, day, week etc.
 2. Create the date dimension table and write it in parquet format partitioned by year of arrival date.

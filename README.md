@@ -34,6 +34,7 @@ Below are the target table details:
 9. i94_gender = Gender of the traveller obtained from i94_apr16_sub.sas7bdat(gender)
 10. i94_age = Age of the traveller obtained from i94_apr16_sub.sas7bdat(i94bir and biryear)
 11. year = Year of arrival date
+
 2. dim_temperature: The table will contain the temperature for USA across various cities post 1970.
 ---------------------
 1. i94_port_code = 3 character i94 port code from the immigration dataset obtained from I94PORT_lookup.csv(code)
@@ -45,6 +46,7 @@ Below are the target table details:
 7. latitude = latitude where ther temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(Latitude).
 8. longitude = longitude where the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(Longitude).
 9. year = year of date when the tempertature was recorded.
+
 3. dim_date : The table will contain various date dimensions for the arrival and deperature dates from the immigration dataset.
 ---------------------
 1. date = arrival date obtained from i94_apr16_sub.sas7bdat(arrdate)
@@ -72,6 +74,7 @@ The ETL pipeline will leverage Spark's in memory processing capabilities which i
 6. Get the gender and cicid of the traveller.
 7. Convert the arrival date and the departure date from SAS numeric format to yyyy-mm-dd format and filter out the invalid records.
 8. Select the required columns to create the fact table and write it in parquet format partitioned by year of arrival date and i94 port code.
+
 2. dim_temperature:
 --------------------
 1. Read the GlobalLandTemperaturesByCity.csv file and convert to spark dataframe
@@ -79,6 +82,7 @@ The ETL pipeline will leverage Spark's in memory processing capabilities which i
 3. Check the other required column for null values
 4. Join GlobalLandTemperaturesByCity.csv with the I94PORT_lookup.csv dataframes to get the i94 port of entry code and state based on the city column.
 5. Select the required columns to create the temperature dimension table and write in parquet format partitioned by year of the date when the temperature was recorded.
+
 3. dim_date:
 --------------------
 1. Get the arrival date from immigration fact table and extract various date dimensions such as year, month, day, week etc.

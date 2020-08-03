@@ -20,69 +20,40 @@ Below are the target table details:
 2. Dimension Tables: dim_temperature, dim_date
 3. Format: parquet
 
-### Conceptual Data Model:
-1. fact_immigration: The table will contain the immigration details for travellers travelling in US.
-i94_cicid
-i94_country_origin
-i94_country_residence
-i94_port_code
-i94_arrival_date
-i94_dep_date
-i94_mode_travel
-i94_visa_type
-i94_gender
-i94_age
-year
-2. dim_temperature: The table will contain the temperature for USA across various cities post 1970.
-i94_port_code
-city
-state
-date
-avg_temperature
-avg_temperature_un
-latitude
-longitude
-year
-3. dim_date : The table will contain various date dimensions for the arrival dates from the immigration dataset.
-date
-year
-month
-day
-week
-weekday
-quarter
-
-### Data dictionary:
+### Conceptual Data Model and Data dictionary:
 1. fact_immigration: The table will contain the immigration details for travellers travelling in the US.
-i94_cicid = unique id assigned to each row obtained from i94_apr16_sub.sas7bdat(cicid)
-i94_country_origin = coutry of origin obtained from I94CIT_I94RES_lookup.csv(value)
-i94_country_residence = country of residence obtained from I94CIT_I94RES_lookup.csv(value)
-i94_port_code = 3 character i94 port code specifying the port of entry in the USA obtained from i94_apr16_sub.sas7bdat(i94port)
-i94_arrival_date = Arrival date in the USA obtained from i94_apr16_sub.sas7bdat(arrdate)
-i94_dep_date = Departure date from the USA i94_apr16_sub.sas7bdat(depdate)
-i94_mode_travel = Mode of travel obtained from i94_apr16_sub.sas7bdat(i94mode)
-i94_visa_type = Visa type issued obtained from i94_apr16_sub.sas7bdat(i94visa)
-i94_gender = Gender of the traveller obtained from i94_apr16_sub.sas7bdat(gender)
-i94_age = Age of the traveller obtained from i94_apr16_sub.sas7bdat(i94bir and biryear)
-year = Year of arrival date
+---------------------
+1. i94_cicid = unique id assigned to each row obtained from i94_apr16_sub.sas7bdat(cicid)
+2. i94_country_origin = coutry of origin obtained from I94CIT_I94RES_lookup.csv(value)
+3. i94_country_residence = country of residence obtained from I94CIT_I94RES_lookup.csv(value)
+4. i94_port_code = 3 character i94 port code specifying the port of entry in the USA obtained from i94_apr16_sub.sas7bdat(i94port)
+5. i94_arrival_date = Arrival date in the USA obtained from i94_apr16_sub.sas7bdat(arrdate)
+6. i94_dep_date = Departure date from the USA i94_apr16_sub.sas7bdat(depdate)
+7. i94_mode_travel = Mode of travel obtained from i94_apr16_sub.sas7bdat(i94mode)
+8. i94_visa_type = Visa type issued obtained from i94_apr16_sub.sas7bdat(i94visa)
+9. i94_gender = Gender of the traveller obtained from i94_apr16_sub.sas7bdat(gender)
+10. i94_age = Age of the traveller obtained from i94_apr16_sub.sas7bdat(i94bir and biryear)
+11. year = Year of arrival date
 2. dim_temperature: The table will contain the temperature for USA across various cities post 1970.
-i94_port_code = 3 character i94 port code from the immigration dataset obtained from I94PORT_lookup.csv(code)
-city = City where the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(city).
-state = State details for the i94 port from the immigration dataset obtained from I94PORT_lookup.csv(state)
-date = Date when the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(dt).
-avg_temperature = Average temperature in the city obtained from GlobalLandTemperaturesByCity.csv(AverageTemperature).
-avg_temperature_un = Average temperature uncertainity in the city obtained from GlobalLandTemperaturesByCity.csv(AverageTemperatureUncertainty).
-latitude = latitude where ther temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(Latitude).
-longitude = longitude where the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(Longitude).
-year = year of date when the tempertature was recorded.
+---------------------
+1. i94_port_code = 3 character i94 port code from the immigration dataset obtained from I94PORT_lookup.csv(code)
+2. city = City where the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(city).
+3. state = State details for the i94 port from the immigration dataset obtained from I94PORT_lookup.csv(state)
+4. date = Date when the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(dt).
+5. avg_temperature = Average temperature in the city obtained from GlobalLandTemperaturesByCity.csv(AverageTemperature).
+6. avg_temperature_un = Average temperature uncertainity in the city obtained from GlobalLandTemperaturesByCity.csv(AverageTemperatureUncertainty).
+7. latitude = latitude where ther temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(Latitude).
+8. longitude = longitude where the temperature was recorded obtained from GlobalLandTemperaturesByCity.csv(Longitude).
+9. year = year of date when the tempertature was recorded.
 3. dim_date : The table will contain various date dimensions for the arrival and deperature dates from the immigration dataset.
-date = arrival date obtained from i94_apr16_sub.sas7bdat(arrdate)
-year = year of arrival date
-month = month of arrival date
-day = day of arrival date
-week = week of the year of arrival date
-weekday = day of the week of arrival date
-quarter = quarter of arrival date
+---------------------
+1. date = arrival date obtained from i94_apr16_sub.sas7bdat(arrdate)
+2. year = year of arrival date
+3. month = month of arrival date
+4. day = day of arrival date
+5. week = week of the year of arrival date
+6. weekday = day of the week of arrival date
+7. quarter = quarter of arrival date
 
 ### ETL Pipeline Design:
 The ETL pipeline will leverage Spark's in memory processing capabilities which is very fast and will loads the data as follows:
